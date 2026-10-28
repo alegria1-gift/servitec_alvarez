@@ -3,423 +3,1866 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/estilos.css">
 <title>Servitec Alvarez | Servicio técnico para tu hogar</title>
+
+<style>
+:root {
+  --oscuro: #102d35;
+  --verde: #087e83;
+  --menta: #dff5ed;
+  --lima: #d5f36a;
+  --fondo: #f7f8f2;
+  --texto: #18363b;
+  --gris: #637579;
+  --blanco: #fff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.contenedor {
+  width: min(1120px, 90%);
+  margin: auto;
+}
+
+.barra-superior {
+  background: var(--oscuro);
+  color: #fff;
+  text-align: center;
+  padding: 9px;
+  font-size: 13px;
+}
+
+header {
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 12px #102d3510;
+}
+
+nav {
+  min-height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  font-size: 27px;
+  font-weight: 900;
+  color: var(--oscuro);
+}
+
+.logo span,
+h1 span {
+  color: var(--verde);
+}
+
+.enlaces {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.enlaces a:hover {
+  color: var(--verde);
+}
+
+.boton {
+  display: inline-block;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 20px;
+  background: var(--verde);
+  color: #fff;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.boton:hover {
+  background: var(--oscuro);
+  transform: translateY(-2px);
+}
+
+.boton-secundario {
+  background: #fff;
+  color: var(--oscuro);
+  border: 1px solid #dce5e0;
+}
+
+.menu {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 27px;
+  color: var(--oscuro);
+}
+
+.portada {
+  padding: 75px 0;
+}
+
+.portada-grid,
+.empresa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 45px;
+}
+
+.etiqueta {
+  display: inline-block;
+  background: var(--menta);
+  color: var(--verde);
+  border-radius: 30px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -2px;
+  color: var(--oscuro);
+  margin: 22px 0;
+}
+
+.portada p {
+  font-size: 17px;
+  color: var(--gris);
+  margin-bottom: 25px;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ilustracion {
+  min-height: 380px;
+  border-radius: 30px;
+  background: var(--menta);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 25px;
+}
+
+.electrodomestico {
+  background: #fff;
+  width: 125px;
+  height: 220px;
+  border: 2px solid #d2dfda;
+  border-radius: 14px;
+  padding: 15px 10px;
+  text-align: center;
+  box-shadow: 0 12px 25px #102d3512;
+  transition: transform .25s, box-shadow .25s;
+}
+
+.electrodomestico:hover {
+  transform: translateY(-6px) rotate(-1deg);
+  box-shadow: 0 18px 30px #102d3520;
+}
+
+.electrodomestico h3 {
+  font-size: 13px;
+  margin-top: 20px;
+  color: var(--oscuro);
+}
+
+.equipo-ilustracion {
+  display: block;
+  width: 100%;
+  max-width: 108px;
+  height: 132px;
+  margin: 10px auto 0;
+}
+
+section {
+  scroll-margin-top: 90px;
+}
+
+.seccion {
+  padding: 75px 0;
+}
+
+.titulo-seccion {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 38px;
+}
+
+.titulo-seccion h2 {
+  font-size: clamp(30px, 4vw, 43px);
+  color: var(--oscuro);
+  line-height: 1.2;
+  margin: 12px 0;
+}
+
+.titulo-seccion p {
+  color: var(--gris);
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.tarjeta {
+  background: #fff;
+  border: 1px solid #e1e9e5;
+  border-radius: 22px;
+  padding: 28px;
+  transition: .25s;
+}
+
+.tarjeta:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 15px 35px #102d3515;
+}
+
+.icono-servicio {
+  background: var(--menta);
+  width: 65px;
+  height: 65px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+}
+
+.icono-servicio svg {
+  width: 48px;
+  height: 48px;
+}
+
+.tarjeta h3 {
+  font-size: 22px;
+  color: var(--oscuro);
+  margin-bottom: 10px;
+}
+
+.tarjeta p {
+  color: var(--gris);
+  margin-bottom: 22px;
+}
+
+.empresa {
+  background: linear-gradient(135deg, #102d35 0%, #174b50 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.empresa:before {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border: 1px solid #ffffff15;
+  border-radius: 50%;
+  right: -100px;
+  top: -150px;
+  box-shadow: 0 0 0 35px #ffffff05, 0 0 0 70px #ffffff03;
+  pointer-events: none;
+}
+
+.empresa .contenedor {
+  position: relative;
+}
+
+.empresa h2 {
+  font-size: clamp(30px, 4vw, 43px);
+  line-height: 1.2;
+  margin: 15px 0;
+}
+
+.empresa p {
+  color: #c0d3d1;
+  margin-bottom: 20px;
+}
+
+.empresa-detalles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+  margin: 25px 0;
+}
+
+.empresa-detalle {
+  border-left: 3px solid var(--lima);
+  padding: 5px 0 5px 13px;
+}
+
+.empresa-detalle strong {
+  display: block;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.empresa-detalle span {
+  display: block;
+  color: #c0d3d1;
+  font-size: 13px;
+}
+
+.empresa-panel {
+  background: #ffffff0c;
+  border: 1px solid #ffffff24;
+  border-radius: 24px;
+  padding: 27px;
+  box-shadow: 0 20px 55px #061c2025;
+}
+
+.empresa-panel h3 {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+
+.empresa-panel > p {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.ventajas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.ventaja {
+  padding: 20px;
+  border: 1px solid #ffffff30;
+  border-radius: 17px;
+  background: #ffffff08;
+  transition: transform .2s, border-color .2s;
+}
+
+.ventaja:hover {
+  transform: translateY(-4px);
+  border-color: #d5f36a80;
+}
+
+.ventaja-icono {
+  font-size: 24px;
+}
+
+.ventaja strong {
+  display: block;
+  margin: 8px 0;
+}
+
+.ventaja p {
+  font-size: 13px;
+  margin: 0;
+}
+
+.empresa-nota {
+  font-size: 12px;
+  color: #b8cfcb;
+  margin-top: 17px;
+}
+
+/* Asistente interactivo */
+
+.asistente {
+  background: linear-gradient(180deg, #e8f7f0 0%, #f7f8f2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.asistente:before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: #d5f36a40;
+  filter: blur(3px);
+  right: -110px;
+  top: 20px;
+  pointer-events: none;
+}
+
+.asistente .contenedor {
+  position: relative;
+}
+
+.asistente-layout {
+  display: grid;
+  grid-template-columns: .8fr 1.2fr;
+  gap: 35px;
+  align-items: center;
+}
+
+.asistente-copy h2 {
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.12;
+  color: var(--oscuro);
+  margin: 15px 0;
+}
+
+.asistente-copy p {
+  color: var(--gris);
+  margin-bottom: 20px;
+}
+
+.mini-beneficio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 13px 0;
+  font-size: 14px;
+}
+
+.mini-beneficio span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--verde);
+}
+
+.asistente-card {
+  background: #fff;
+  border: 1px solid #dce9e1;
+  border-radius: 26px;
+  padding: clamp(20px, 3vw, 32px);
+  box-shadow: 0 24px 60px #102d3512;
+}
+
+.asistente-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.asistente-top strong {
+  color: var(--oscuro);
+  font-size: 18px;
+}
+
+.paso-indicador {
+  font-size: 12px;
+  color: var(--verde);
+  font-weight: bold;
+  background: var(--menta);
+  border-radius: 20px;
+  padding: 7px 11px;
+}
+
+.barra-progreso {
+  height: 6px;
+  background: #e8efeb;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.barra-progreso span {
+  display: block;
+  width: 33.333%;
+  height: 100%;
+  background: var(--verde);
+  border-radius: 20px;
+  transition: width .25s;
+}
+
+.asistente-pregunta {
+  font-size: 21px;
+  color: var(--oscuro);
+  margin-bottom: 15px;
+}
+
+.opciones-equipo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.opcion-equipo {
+  border: 1px solid #dce5e0;
+  border-radius: 16px;
+  background: #fff;
+  padding: 16px 8px;
+  color: var(--texto);
+  transition: .2s;
+}
+
+.opcion-equipo span {
+  display: block;
+  font-size: 31px;
+  margin-bottom: 5px;
+}
+
+.opcion-equipo strong {
+  font-size: 13px;
+}
+
+.opcion-equipo:hover,
+.opcion-equipo.seleccionado {
+  border-color: var(--verde);
+  background: var(--menta);
+  box-shadow: 0 0 0 2px #087e8315;
+}
+
+.opciones-falla {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 22px;
+}
+
+.opcion-falla {
+  border: 1px solid #dce5e0;
+  background: #fff;
+  border-radius: 22px;
+  padding: 10px 13px;
+  color: var(--texto);
+  font-size: 13px;
+}
+
+.opcion-falla.seleccionado,
+.opcion-falla:hover {
+  background: var(--oscuro);
+  border-color: var(--oscuro);
+  color: #fff;
+}
+
+.asistente-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 20px;
+}
+
+.asistente-campo label {
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--oscuro);
+}
+
+.asistente-campo input {
+  padding: 13px;
+  border: 1px solid #ccd9d3;
+  border-radius: 11px;
+  font: inherit;
+  outline-color: var(--verde);
+}
+
+.asistente-acciones {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.asistente-acciones .boton:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.asistente-ayuda {
+  font-size: 12px;
+  color: var(--gris);
+  margin-top: 15px;
+}
+
+.asistente-error {
+  display: none;
+  color: #a33b2b;
+  font-size: 13px;
+  margin: -10px 0 15px;
+}
+
+.asistente-error.visible {
+  display: block;
+}
+
+.flotante-ayuda {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 20;
+  border: 0;
+  border-radius: 999px;
+  background: var(--oscuro);
+  color: #fff;
+  padding: 13px 18px;
+  box-shadow: 0 10px 30px #102d3540;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  transition: .2s;
+}
+
+.flotante-ayuda:hover {
+  background: var(--verde);
+  transform: translateY(-3px);
+}
+
+/* Historia del proyecto */
+
+.historia {
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.historia-grid {
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 42px;
+  align-items: start;
+}
+
+.fundador-card {
+  background: linear-gradient(145deg, var(--oscuro), #174b50);
+  color: #fff;
+  border-radius: 26px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 18px 40px #102d3518;
+}
+
+.fundador-card:after {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border: 1px solid #ffffff20;
+  border-radius: 50%;
+  right: -70px;
+  top: -70px;
+  box-shadow: 0 0 0 25px #ffffff08, 0 0 0 50px #ffffff05;
+  pointer-events: none;
+}
+
+.fundador-avatar {
+  width: 74px;
+  height: 74px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: var(--lima);
+  color: var(--oscuro);
+  font-size: 29px;
+  font-weight: 900;
+  margin-bottom: 22px;
+}
+
+.fundador-card h3 {
+  font-size: 25px;
+  line-height: 1.2;
+  margin: 9px 0;
+}
+
+.fundador-card p {
+  color: #c0d3d1;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.fundador-rol {
+  display: inline-block;
+  padding: 6px 11px;
+  border: 1px solid #ffffff35;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.historia-contenido h2 {
+  font-size: clamp(30px, 4vw, 43px);
+  line-height: 1.15;
+  color: var(--oscuro);
+  margin: 12px 0 18px;
+}
+
+.historia-contenido > p {
+  color: var(--gris);
+  margin-bottom: 17px;
+}
+
+.historia-hito {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.historia-hito-icono {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--menta);
+  color: var(--verde);
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.historia-hito h3 {
+  color: var(--oscuro);
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+.historia-hito p {
+  color: var(--gris);
+  font-size: 14px;
+}
+
+.historia-valores {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.historia-valor {
+  background: var(--fondo);
+  border: 1px solid #e1e9e5;
+  border-radius: 16px;
+  padding: 17px;
+}
+
+.historia-valor strong {
+  display: block;
+  color: var(--oscuro);
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.historia-valor span {
+  display: block;
+  color: var(--gris);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Pasos del servicio */
+
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.paso {
+  background: #fff;
+  border: 1px solid #e1e9e5;
+  border-radius: 18px;
+  padding: 22px;
+}
+
+.numero {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--lima);
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.paso h3 {
+  color: var(--oscuro);
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.paso p {
+  color: var(--gris);
+  font-size: 14px;
+}
+
+.llamado {
+  background: var(--lima);
+  border-radius: 25px;
+  padding: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.llamado h2 {
+  color: var(--oscuro);
+  font-size: 30px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+/* Preguntas frecuentes */
+
+.preguntas {
+  max-width: 800px;
+  margin: auto;
+}
+
+.pregunta {
+  border-bottom: 1px solid #dce5e0;
+}
+
+.pregunta button {
+  width: 100%;
+  text-align: left;
+  padding: 20px 0;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  font-weight: bold;
+  color: var(--oscuro);
+}
+
+.respuesta {
+  display: none;
+  color: var(--gris);
+  padding-bottom: 20px;
+}
+
+.pregunta.activa .respuesta {
+  display: block;
+}
+
+/* Pie de página */
+
+footer {
+  background: var(--oscuro);
+  color: #fff;
+  padding: 45px 0 20px;
+  margin-top: 50px;
+}
+
+.pie-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 35px;
+}
+
+footer p {
+  color: #c0d3d1;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+footer h3 {
+  margin-bottom: 12px;
+}
+
+.pie-enlaces {
+  display: grid;
+  gap: 8px;
+}
+
+.pie-enlaces a:hover {
+  color: var(--lima);
+}
+
+.copyright {
+  border-top: 1px solid #ffffff25;
+  padding-top: 20px;
+  font-size: 13px;
+  color: #c0d3d1;
+}
+
+/* Formulario modal */
+
+.fondo-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #061c20bb;
+  padding: 20px;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.fondo-modal.abierto {
+  display: flex;
+}
+
+.modal {
+  width: min(650px, 100%);
+  background: #fff;
+  border-radius: 22px;
+  padding: 28px;
+  margin: auto;
+}
+
+.modal-cabecera {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.modal-cabecera h2 {
+  color: var(--oscuro);
+}
+
+.cerrar {
+  border: none;
+  background: none;
+  font-size: 28px;
+  align-self: flex-start;
+}
+
+.formulario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo.completo {
+  grid-column: 1 / -1;
+}
+
+.campo label {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd9d3;
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+}
+
+.campo textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+.aviso {
+  display: none;
+  margin-top: 15px;
+  padding: 13px;
+  border-radius: 10px;
+  background: var(--menta);
+  color: var(--oscuro);
+}
+
+.aviso.visible {
+  display: block;
+}
+
+.enviar {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Diseño adaptable */
+
+@media (max-width: 850px) {
+  .portada-grid,
+  .empresa-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjetas {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pasos {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .portada {
+    padding: 45px 0;
+  }
+
+  .ilustracion {
+    min-height: 300px;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .enlaces {
+    display: none;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    right: 0;
+    padding: 25px;
+    background: #fff;
+    flex-direction: column;
+  }
+
+  .enlaces.abierto {
+    display: flex;
+  }
+
+  .boton-nav {
+    display: none;
+  }
+
+  .asistente-layout,
+  .historia-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .fundador-card {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 550px) {
+  .tarjetas,
+  .pasos,
+  .ventajas,
+  .pie-grid,
+  .formulario-grid,
+  .historia-valores,
+  .empresa-detalles {
+    grid-template-columns: 1fr;
+  }
+
+  .llamado {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 25px;
+  }
+
+  .campo.completo {
+    grid-column: auto;
+  }
+
+  h1 {
+    letter-spacing: -1px;
+  }
+
+  .electrodomestico {
+    width: 100px;
+    height: 185px;
+  }
+
+  .fundador-card,
+  .empresa-panel {
+    padding: 24px 19px;
+  }
+
+  .opciones-equipo {
+    gap: 7px;
+  }
+
+  .opcion-equipo {
+    padding: 13px 5px;
+  }
+
+  .opcion-equipo strong {
+    font-size: 12px;
+  }
+
+  .flotante-ayuda {
+    right: 12px;
+    bottom: 12px;
+    padding: 12px 15px;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <div class="barra-superior">
-Servicio técnico para tu hogar · Atención organizada y respaldo empresarial
+  Servicio técnico para tu hogar · Atención organizada y respaldo empresarial
 </div>
 
 <header>
-<nav class="contenedor">
-<a class="logo" href="#inicio">Servitec<span>Alvarez</span></a>
+  <nav class="contenedor">
+    <a class="logo" href="#inicio">Servitec<span>Alvarez</span></a>
 
-<button class="menu" id="menu" aria-label="Abrir menú">☰</button>
+    <button class="menu" id="menu" aria-label="Abrir menú">☰</button>
 
-<div class="enlaces" id="enlaces">
-<a href="#inicio">Inicio</a>
-<a href="#servicios">Servicios</a>
-<a href="#empresa">Nosotros</a>
-<a href="#proceso">Cómo funciona</a>
-<a href="#preguntas">Preguntas</a>
-</div>
+    <div class="enlaces" id="enlaces">
+      <a href="#inicio">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#empresa">Nosotros</a>
+      <a href="#historia">Nuestra historia</a>
+      <a href="#proceso">Cómo funciona</a>
+      <a href="#preguntas">Preguntas</a>
+    </div>
 
-<button class="boton boton-nav" data-abrir>
-Solicitar servicio
-</button>
-</nav>
+    <button class="boton boton-nav" data-abrir>
+      Solicitar servicio
+    </button>
+  </nav>
 </header>
 
 <main>
 
+<!-- PORTADA -->
+
 <section class="portada" id="inicio">
-<div class="contenedor portada-grid">
+  <div class="contenedor portada-grid">
 
-<div>
-<span class="etiqueta">● Soluciones para tu hogar</span>
+    <div>
+      <span class="etiqueta">● Soluciones para tu hogar</span>
 
-<h1>
-Tus electrodomésticos en buenas manos.
-<span>Nosotros te ayudamos.</span>
-</h1>
+      <h1>
+        Tus electrodomésticos en buenas manos.
+        <span>Nosotros te ayudamos.</span>
+      </h1>
 
-<p>
-Servicio técnico para lavadoras, estufas y neveras.
-Solicita tu servicio en línea y deja que nuestro equipo
-coordine la atención que necesitas.
-</p>
+      <p>
+        Servicio técnico para lavadoras, estufas y neveras.
+        Solicita tu servicio en línea y deja que nuestro equipo
+        coordine la atención que necesitas.
+      </p>
 
-<div class="acciones">
-<button class="boton" data-abrir>
-Adquiere nuestros servicios →
-</button>
+      <div class="acciones">
+        <button class="boton" data-abrir>
+          Adquiere nuestros servicios →
+        </button>
 
-<a class="boton boton-secundario" href="#servicios">
-Explorar servicios
-</a>
-</div>
-</div>
+        <a class="boton boton-secundario" href="#servicios">
+          Explorar servicios
+        </a>
+      </div>
+    </div>
 
-<div class="ilustracion">
-<div class="electrodomestico">
-<h3>Lavadoras</h3>
-<div class="icono">🧺</div>
+    <div class="ilustracion">
 
-</div>
+      <div class="electrodomestico">
+        <h3>Lavadoras</h3>
+        <svg class="equipo-ilustracion" viewBox="0 0 120 145"
+          role="img" aria-label="Ilustración de una lavadora">
+          <defs>
+            <linearGradient id="lavadoraCuerpo" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#dce9e6"/>
+            </linearGradient>
+            <linearGradient id="lavadoraVidrio" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#8fd7d0"/>
+              <stop offset="1" stop-color="#087e83"/>
+            </linearGradient>
+          </defs>
+          <rect x="17" y="5" width="86" height="132" rx="10"
+            fill="url(#lavadoraCuerpo)" stroke="#b7cbc5" stroke-width="2"/>
+          <rect x="25" y="14" width="70" height="21" rx="4" fill="#e8f2ef"/>
+          <circle cx="38" cy="24" r="4" fill="#087e83"/>
+          <rect x="48" y="20" width="24" height="7" rx="3" fill="#b5c8c3"/>
+          <circle cx="60" cy="82" r="34" fill="#c6d9d5" stroke="#718d89" stroke-width="3"/>
+          <circle cx="60" cy="82" r="27" fill="url(#lavadoraVidrio)"/>
+          <path d="M42 81c8-14 24-14 36 0-9 14-26 15-36 0Z"
+            fill="#dff5ed" opacity=".8"/>
+          <path d="M35 66c12-10 34-10 47 2"
+            fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+          <rect x="27" y="124" width="15" height="3" rx="1.5" fill="#b7cbc5"/>
+          <rect x="78" y="124" width="15" height="3" rx="1.5" fill="#b7cbc5"/>
+        </svg>
+      </div>
 
-<div class="electrodomestico">
-<h3>Neveras</h3>
-<div class="icono">❄️</div>
-</div>
+      <div class="electrodomestico">
+        <h3>Neveras</h3>
+        <svg class="equipo-ilustracion" viewBox="0 0 120 145"
+          role="img" aria-label="Ilustración de una nevera">
+          <defs>
+            <linearGradient id="neveraCuerpo" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#dbe9e6"/>
+            </linearGradient>
+          </defs>
+          <rect x="24" y="4" width="72" height="134" rx="9"
+            fill="url(#neveraCuerpo)" stroke="#b7cbc5" stroke-width="2"/>
+          <path d="M25 58h70" stroke="#a8bfba" stroke-width="2"/>
+          <rect x="80" y="23" width="4" height="25" rx="2" fill="#087e83"/>
+          <rect x="80" y="69" width="4" height="30" rx="2" fill="#087e83"/>
+          <path d="M34 16h51" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+          <rect x="31" y="126" width="12" height="4" rx="2" fill="#a8bfba"/>
+          <rect x="77" y="126" width="12" height="4" rx="2" fill="#a8bfba"/>
+          <circle cx="58" cy="40" r="10" fill="#dff5ed"/>
+          <path d="M58 32v16M50 40h16M52 34l12 12M64 34 52 46"
+            stroke="#087e83" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
 
-<div class="electrodomestico">
-    <h3>Estufas</h3>
-<div class="icono">🔥</div>
-</div>
-</div>
+      <div class="electrodomestico">
+        <h3>Estufas</h3>
+        <svg class="equipo-ilustracion" viewBox="0 0 120 145"
+          role="img" aria-label="Ilustración de una estufa">
+          <defs>
+            <linearGradient id="estufaCuerpo" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#ffffff"/>
+              <stop offset="1" stop-color="#dce8e5"/>
+            </linearGradient>
+          </defs>
+          <rect x="16" y="8" width="88" height="130" rx="9"
+            fill="url(#estufaCuerpo)" stroke="#b7cbc5" stroke-width="2"/>
+          <rect x="23" y="15" width="74" height="18" rx="4" fill="#e9f1ef"/>
+          <circle cx="35" cy="24" r="4" fill="#087e83"/>
+          <circle cx="49" cy="24" r="4" fill="#087e83"/>
+          <circle cx="63" cy="24" r="4" fill="#087e83"/>
+          <circle cx="77" cy="24" r="4" fill="#087e83"/>
+          <rect x="23" y="41" width="74" height="49" rx="5" fill="#263e42"/>
+          <circle cx="43" cy="56" r="10" fill="none" stroke="#d5f36a" stroke-width="3"/>
+          <circle cx="77" cy="56" r="10" fill="none" stroke="#d5f36a" stroke-width="3"/>
+          <circle cx="43" cy="76" r="7" fill="none" stroke="#b6d5ce" stroke-width="2"/>
+          <circle cx="77" cy="76" r="7" fill="none" stroke="#b6d5ce" stroke-width="2"/>
+          <rect x="24" y="97" width="72" height="31" rx="4" fill="#cbdad6"/>
+          <rect x="31" y="103" width="58" height="19" rx="3" fill="#eaf2ef"/>
+          <path d="M38 109h44M38 115h44"
+            stroke="#a4bbb5" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
 
-</div>
+    </div>
+  </div>
 </section>
+
+<!-- ASISTENTE INTERACTIVO -->
+
+<section class="seccion asistente" id="asistente">
+  <div class="contenedor asistente-layout">
+
+    <div class="asistente-copy">
+      <span class="etiqueta">Tu solicitud empieza aquí</span>
+      <h2>Cuéntanos qué necesita tu electrodoméstico.</h2>
+      <p>
+        Responde unas preguntas rápidas y te ayudaremos a preparar
+        la solicitud adecuada. Es sencillo, claro y sin compromiso
+        de autorizar una reparación.
+      </p>
+
+      <div class="mini-beneficio">
+        <span>✓</span> Elige tu equipo y describe la falla.
+      </div>
+      <div class="mini-beneficio">
+        <span>✓</span> Indica tu ciudad para revisar la cobertura.
+      </div>
+      <div class="mini-beneficio">
+        <span>✓</span> Revisa los datos antes de enviar la solicitud.
+      </div>
+    </div>
+
+    <div class="asistente-card">
+      <div class="asistente-top">
+        <strong>Asistente Servitec</strong>
+        <span class="paso-indicador" id="asistentePaso">PASO 1 DE 3</span>
+      </div>
+
+      <div class="barra-progreso">
+        <span id="asistenteProgreso"></span>
+      </div>
+
+      <div id="asistentePantalla">
+        <h3 class="asistente-pregunta">¿Qué equipo necesita atención?</h3>
+
+        <div class="opciones-equipo">
+          <button type="button" class="opcion-equipo" data-equipo="Lavadora">
+            <span>🧺</span><strong>Lavadora</strong>
+          </button>
+          <button type="button" class="opcion-equipo" data-equipo="Nevera">
+            <span>❄️</span><strong>Nevera</strong>
+          </button>
+          <button type="button" class="opcion-equipo" data-equipo="Estufa">
+            <span>🔥</span><strong>Estufa</strong>
+          </button>
+        </div>
+
+        <div class="asistente-acciones">
+          <span class="asistente-ayuda">Te tomará menos de un minuto.</span>
+          <button type="button" class="boton" id="asistenteSiguiente" disabled>
+            Continuar →
+          </button>
+        </div>
+      </div>
+
+      <p class="asistente-ayuda">
+        La solicitud no confirma una cita ni un precio. La empresa
+        debe confirmar cobertura, disponibilidad y condiciones.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICIOS -->
 
 <section class="seccion" id="servicios">
-<div class="contenedor">
+  <div class="contenedor">
 
-<div class="titulo-seccion">
-<span class="etiqueta">Nuestros servicios</span>
-<h2>Soluciones para tus electrodomésticos</h2>
-<p>
-Cuida tus equipos con servicios de diagnóstico,
-reparación y mantenimiento.
-</p>
-</div>
+    <div class="titulo-seccion">
+      <span class="etiqueta">Nuestros servicios</span>
+      <h2>Soluciones para tus electrodomésticos</h2>
+      <p>
+        Cuida tus equipos con servicios de diagnóstico,
+        reparación y mantenimiento.
+      </p>
+    </div>
 
-<div class="tarjetas">
+    <div class="tarjetas">
 
-<article class="tarjeta">
-<div class="icono-servicio">🧺</div>
-<h3>Reparación de lavadoras</h3>
-<p>
-Diagnóstico de fallas, problemas de centrifugado,
-drenaje, fugas y mantenimiento preventivo.
-</p>
-<button class="boton" data-servicio="Lavadora">
-Solicitar servicio →
-</button>
-</article>
+      <article class="tarjeta">
+        <div class="icono-servicio">
+          <svg viewBox="0 0 64 64" role="img" aria-label="Lavadora">
+            <rect x="13" y="5" width="38" height="54" rx="5"
+              fill="#fff" stroke="#087e83" stroke-width="2.5"/>
+            <rect x="18" y="10" width="28" height="8" rx="2" fill="#dff5ed"/>
+            <circle cx="24" cy="14" r="1.8" fill="#087e83"/>
+            <circle cx="32" cy="37" r="14" fill="#bfe8df" stroke="#087e83" stroke-width="2.5"/>
+            <circle cx="32" cy="37" r="9" fill="#087e83"/>
+            <path d="M25 37c4-6 10-6 14 0-4 6-10 6-14 0Z" fill="#dff5ed"/>
+          </svg>
+        </div>
+        <h3>Reparación de lavadoras</h3>
+        <p>
+          Diagnóstico de fallas, problemas de centrifugado,
+          drenaje, fugas y mantenimiento preventivo.
+        </p>
+        <button class="boton" data-servicio="Lavadora">
+          Solicitar servicio →
+        </button>
+      </article>
 
-<article class="tarjeta">
-<div class="icono-servicio">🔥</div>
-<h3>Reparación de estufas</h3>
-<p>
-Revisión de encendido, quemadores y otras fallas.
-La atención depende del tipo de equipo.
-</p>
-<button class="boton" data-servicio="Estufa">
-Solicitar servicio →
-</button>
-</article>
+      <article class="tarjeta">
+        <div class="icono-servicio">
+          <svg viewBox="0 0 64 64" role="img" aria-label="Estufa">
+            <rect x="7" y="7" width="50" height="50" rx="6"
+              fill="#fff" stroke="#087e83" stroke-width="2.5"/>
+            <rect x="12" y="12" width="40" height="9" rx="2" fill="#dff5ed"/>
+            <circle cx="20" cy="16.5" r="2" fill="#087e83"/>
+            <circle cx="29" cy="16.5" r="2" fill="#087e83"/>
+            <circle cx="38" cy="16.5" r="2" fill="#087e83"/>
+            <circle cx="47" cy="16.5" r="2" fill="#087e83"/>
+            <rect x="12" y="26" width="40" height="25" rx="3" fill="#102d35"/>
+            <circle cx="24" cy="34" r="5" fill="none" stroke="#d5f36a" stroke-width="2"/>
+            <circle cx="40" cy="34" r="5" fill="none" stroke="#d5f36a" stroke-width="2"/>
+            <rect x="17" y="42" width="30" height="4" rx="2" fill="#dff5ed"/>
+          </svg>
+        </div>
+        <h3>Reparación de estufas</h3>
+        <p>
+          Revisión de encendido, quemadores y otras fallas.
+          La atención depende del tipo de equipo.
+        </p>
+        <button class="boton" data-servicio="Estufa">
+          Solicitar servicio →
+        </button>
+      </article>
 
-<article class="tarjeta">
-<div class="icono-servicio">❄️</div>
-<h3>Reparación de neveras</h3>
-<p>
-Revisión de enfriamiento, diagnóstico de fallas
-y mantenimiento para tus alimentos.
-</p>
-<button class="boton" data-servicio="Nevera">
-Solicitar servicio →
-</button>
-</article>
+      <article class="tarjeta">
+        <div class="icono-servicio">
+          <svg viewBox="0 0 64 64" role="img" aria-label="Nevera">
+            <rect x="15" y="4" width="34" height="56" rx="5"
+              fill="#fff" stroke="#087e83" stroke-width="2.5"/>
+            <path d="M16 28h32" stroke="#087e83" stroke-width="2"/>
+            <rect x="40" y="12" width="3" height="10" rx="1.5" fill="#087e83"/>
+            <rect x="40" y="34" width="3" height="13" rx="1.5" fill="#087e83"/>
+            <circle cx="29" cy="16" r="6" fill="#dff5ed"/>
+            <path d="M29 11v10M24 16h10M25.5 12.5l7 7M32.5 12.5l-7 7"
+              stroke="#087e83" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Reparación de neveras</h3>
+        <p>
+          Revisión de enfriamiento, diagnóstico de fallas
+          y mantenimiento para tus alimentos.
+        </p>
+        <button class="boton" data-servicio="Nevera">
+          Solicitar servicio →
+        </button>
+      </article>
 
-</div>
-</div>
+    </div>
+  </div>
 </section>
+
+<!-- NOSOTROS -->
 
 <section class="seccion empresa" id="empresa">
-<div class="contenedor empresa-grid">
+  <div class="contenedor empresa-grid">
 
-<div>
-<span class="etiqueta">Una empresa, un respaldo</span>
+    <div>
+      <span class="etiqueta">Una empresa, un respaldo</span>
 
-<h2>No somos una aplicación que conecta desconocidos.</h2>
+      <h2>Un servicio técnico organizado, con atención centrada en ti.</h2>
 
-<p>
-Somos el concepto de una empresa con operación
-administrativa centralizada. Gestionamos las solicitudes,
-coordinamos a los técnicos y ofrecemos un canal de atención
-para nuestros clientes.
-</p>
+      <p>
+        En Servitec Álvarez trabajamos para hacer más sencillo el
+        cuidado de tus electrodomésticos. Nuestro modelo de atención
+        centraliza las solicitudes, la coordinación del servicio y
+        la comunicación con el cliente, para que sepas cuáles son
+        los siguientes pasos antes de autorizar una reparación.
+      </p>
 
-<p>
-El cliente realiza el pago directamente a la empresa
-por sus canales oficiales, no al técnico por fuera
-del proceso establecido.
-</p>
+      <div class="empresa-detalles">
+        <div class="empresa-detalle">
+          <strong>Atención transparente</strong>
+          <span>Información clara sobre diagnóstico, costos y condiciones.</span>
+        </div>
 
-<button class="boton" data-abrir>
-Quiero solicitar un servicio →
-</button>
-</div>
+        <div class="empresa-detalle">
+          <strong>Coordinación central</strong>
+          <span>Un canal para registrar y hacer seguimiento a tu solicitud.</span>
+        </div>
 
-<div class="ventajas">
-<article class="ventaja">
-<div>🏢</div>
-<strong>Empresa responsable</strong>
-<p>Una organización central gestiona cada solicitud.</p>
-</article>
+        <div class="empresa-detalle">
+          <strong>Servicio a tu medida</strong>
+          <span>Revisamos el equipo y la falla reportada para orientar la atención.</span>
+        </div>
 
-<article class="ventaja">
-<div>🔐</div>
-<strong>Pago centralizado</strong>
-<p>El pago se realiza a la empresa por medios oficiales.</p>
-</article>
+        <div class="empresa-detalle">
+          <strong>Compromiso con el cliente</strong>
+          <span>Buscamos que el proceso sea claro desde el primer contacto.</span>
+        </div>
+      </div>
 
-<article class="ventaja">
-<div>📅</div>
-<strong>Agenda organizada</strong>
-<p>Coordinamos la visita según cobertura y disponibilidad.</p>
-</article>
+      <button class="boton" data-abrir>
+        Quiero solicitar un servicio →
+      </button>
+    </div>
 
-<article class="ventaja">
-<div>🛠️</div>
-<strong>Soporte y garantía</strong>
-<p>Consulta las condiciones aplicables a tu reparación.</p>
-</article>
-</div>
+    <div class="empresa-panel">
+      <h3>¿Qué puedes esperar de nosotros?</h3>
+      <p>
+        Un proceso de atención pensado para darte claridad y
+        acompañamiento en cada etapa.
+      </p>
 
-</div>
+      <div class="ventajas">
+        <article class="ventaja">
+          <div class="ventaja-icono">🏢</div>
+          <strong>Gestión centralizada</strong>
+          <p>Tu solicitud se registra y coordina desde un canal de atención.</p>
+        </article>
+
+        <article class="ventaja">
+          <div class="ventaja-icono">🧾</div>
+          <strong>Costos informados</strong>
+          <p>Conoce las condiciones antes de aprobar trabajos adicionales.</p>
+        </article>
+
+        <article class="ventaja">
+          <div class="ventaja-icono">📅</div>
+          <strong>Agenda coordinada</strong>
+          <p>Confirmamos disponibilidad, cobertura y detalles de la visita.</p>
+        </article>
+
+        <article class="ventaja">
+          <div class="ventaja-icono">🛠️</div>
+          <strong>Seguimiento del servicio</strong>
+          <p>Te orientamos sobre el estado de la solicitud y las condiciones aplicables.</p>
+        </article>
+      </div>
+
+      <p class="empresa-nota">
+        Los servicios, la cobertura, los medios de pago y las garantías
+        se confirman al momento de la atención.
+      </p>
+    </div>
+
+  </div>
 </section>
+
+<!-- HISTORIA -->
+
+<section class="seccion historia" id="historia">
+  <div class="contenedor historia-grid">
+
+    <aside class="fundador-card">
+      <div class="fundador-avatar" aria-hidden="true">SA</div>
+      <span class="fundador-rol">CEO y fundador</span>
+      <h3>Una idea con propósito. Un servicio pensado para las personas.</h3>
+      <p>
+        Servitec Álvarez nació de una iniciativa universitaria que
+        conectó la experiencia en reparación de electrodomésticos con
+        una visión de atención más accesible, organizada y cercana.
+      </p>
+    </aside>
+
+    <div class="historia-contenido">
+      <span class="etiqueta">Nuestra historia</span>
+      <h2>De un proyecto universitario a una idea para transformar la atención técnica.</h2>
+
+      <p>
+        Servitec Álvarez comenzó como parte de un proyecto universitario
+        en el que tres estudiantes debían crear una página web. Entre
+        las ideas del grupo surgió una propuesta con una necesidad real
+        detrás: facilitar el acceso a servicios de mantenimiento y
+        reparación de lavadoras, estufas y neveras, una labor que uno
+        de los integrantes ya conocía de primera mano.
+      </p>
+
+      <p>
+        La idea despertó el interés del equipo y los motivó a investigar,
+        buscar referencias y trabajar con dedicación en una plataforma
+        que hiciera más sencillo el primer contacto entre los hogares
+        y un servicio técnico.
+      </p>
+
+      <div class="historia-hito">
+        <div class="historia-hito-icono" aria-hidden="true">↗</div>
+        <div>
+          <h3>Una mirada más digital</h3>
+          <p>
+            La experiencia de uno de los compañeros en Estados Unidos
+            le permitió observar cómo muchas gestiones cotidianas se
+            resuelven desde una página web o un teléfono. Esa perspectiva
+            inspiró al equipo a explorar cómo una experiencia más digital
+            podría aportar comodidad y ahorrar tiempo a los clientes en Colombia.
+          </p>
+        </div>
+      </div>
+
+      <div class="historia-hito">
+        <div class="historia-hito-icono" aria-hidden="true">⌂</div>
+        <div>
+          <h3>Una necesidad cotidiana, una oportunidad de mejora</h3>
+          <p>
+            Encontrar a una persona disponible, coordinar una visita
+            y entender cuánto costará una reparación puede ser complicado.
+            También puede ser difícil para los técnicos organizar recorridos,
+            conseguir nuevos clientes y dedicar su tiempo al trabajo.
+            Servitec Álvarez busca contribuir a una experiencia más clara
+            mediante la recepción y coordinación centralizada de solicitudes.
+          </p>
+        </div>
+      </div>
+
+      <div class="historia-hito">
+        <div class="historia-hito-icono" aria-hidden="true">✦</div>
+        <div>
+          <h3>Lo que queremos construir</h3>
+          <p>
+            Más que una página web, queremos desarrollar un canal confiable
+            y práctico para solicitar atención técnica, con comunicación
+            clara, condiciones transparentes y respeto por el tiempo tanto
+            de los clientes como de los profesionales.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="contenedor historia-valores">
+    <div class="historia-valor">
+      <strong>Transparencia</strong>
+      <span>
+        Información clara sobre el proceso, los costos y las condiciones
+        antes de autorizar el trabajo.
+      </span>
+    </div>
+
+    <div class="historia-valor">
+      <strong>Accesibilidad</strong>
+      <span>
+        Una forma sencilla de iniciar una solicitud desde el teléfono
+        o el computador.
+      </span>
+    </div>
+
+    <div class="historia-valor">
+      <strong>Respeto por el tiempo</strong>
+      <span>
+        Mejor coordinación para que clientes y técnicos puedan
+        organizarse con mayor claridad.
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
 
 <section class="seccion" id="proceso">
-<div class="contenedor">
+  <div class="contenedor">
 
-<div class="titulo-seccion">
-<span class="etiqueta">Así de fácil</span>
-<h2>¿Cómo funciona nuestro servicio?</h2>
-<p>Un proceso organizado desde la solicitud hasta el seguimiento.</p>
-</div>
+    <div class="titulo-seccion">
+      <span class="etiqueta">Así de fácil</span>
+      <h2>¿Cómo funciona nuestro servicio?</h2>
+      <p>Un proceso organizado desde la solicitud hasta el seguimiento.</p>
+    </div>
 
-<div class="pasos">
+    <div class="pasos">
+      <article class="paso">
+        <div class="numero">01</div>
+        <h3>Solicita en línea</h3>
+        <p>Indica qué equipo tienes y cuál es el problema.</p>
+      </article>
 
-<article class="paso">
-<div class="numero">01</div>
-<h3>Solicita en línea</h3>
-<p>Indica qué equipo tienes y cuál es el problema.</p>
-</article>
+      <article class="paso">
+        <div class="numero">02</div>
+        <h3>Confirma el servicio</h3>
+        <p>La empresa revisa la solicitud y te informa las condiciones.</p>
+      </article>
 
-<article class="paso">
-<div class="numero">02</div>
-<h3>Confirma el servicio</h3>
-<p>La empresa revisa la solicitud y te informa las condiciones.</p>
-</article>
+      <article class="paso">
+        <div class="numero">03</div>
+        <h3>Paga a la empresa</h3>
+        <p>Realiza el pago por el canal autorizado después de confirmar.</p>
+      </article>
 
-<article class="paso">
-<div class="numero">03</div>
-<h3>Paga a la empresa</h3>
-<p>Realiza el pago por el canal autorizado después de confirmar.</p>
-</article>
+      <article class="paso">
+        <div class="numero">04</div>
+        <h3>Recibe la atención</h3>
+        <p>Coordinamos la visita y el seguimiento correspondiente.</p>
+      </article>
+    </div>
 
-<article class="paso">
-<div class="numero">04</div>
-<h3>Recibe la atención</h3>
-<p>Coordinamos la visita y el seguimiento correspondiente.</p>
-</article>
-
-</div>
-</div>
+  </div>
 </section>
+
+<!-- LLAMADO A LA ACCIÓN -->
 
 <section class="seccion">
-<div class="contenedor llamado">
-<div>
-<h2>¿Tu electrodoméstico necesita ayuda?</h2>
-<p>Empieza tu solicitud y déjanos coordinar el servicio.</p>
-</div>
+  <div class="contenedor llamado">
+    <div>
+      <h2>¿Tu electrodoméstico necesita ayuda?</h2>
+      <p>Empieza tu solicitud y déjanos coordinar el servicio.</p>
+    </div>
 
-<button class="boton" data-abrir>
-Adquiere nuestros servicios →
-</button>
-</div>
+    <button class="boton" data-abrir>
+      Adquiere nuestros servicios →
+    </button>
+  </div>
 </section>
 
+<!-- PREGUNTAS FRECUENTES -->
+
 <section class="seccion" id="preguntas">
-<div class="contenedor">
+  <div class="contenedor">
 
-<div class="titulo-seccion">
-<span class="etiqueta">Preguntas frecuentes</span>
-<h2>Queremos darte claridad y confianza</h2>
-</div>
+    <div class="titulo-seccion">
+      <span class="etiqueta">Preguntas frecuentes</span>
+      <h2>Queremos darte claridad y confianza</h2>
+    </div>
 
-<div class="preguntas">
+    <div class="preguntas">
 
-<div class="pregunta">
-<button aria-expanded="false">
-¿A quién le realizo el pago? <span>＋</span>
-</button>
-<p class="respuesta">
-El pago se realizará directamente a la empresa mediante
-sus canales oficiales, según las condiciones confirmadas.
-No pagues por canales no autorizados.
-</p>
-</div>
+      <div class="pregunta">
+        <button aria-expanded="false">
+          ¿A quién le realizo el pago? <span>＋</span>
+        </button>
+        <p class="respuesta">
+          El pago se realizará directamente a la empresa mediante
+          sus canales oficiales, según las condiciones confirmadas.
+          No pagues por canales no autorizados.
+        </p>
+      </div>
 
-<div class="pregunta">
-<button aria-expanded="false">
-¿Cómo se determina el precio? <span>＋</span>
-</button>
-<p class="respuesta">
-El precio depende del equipo y de la falla. La empresa
-debe informarte el costo del diagnóstico y las condiciones
-antes de autorizar reparaciones adicionales.
-</p>
-</div>
+      <div class="pregunta">
+        <button aria-expanded="false">
+          ¿Cómo se determina el precio? <span>＋</span>
+        </button>
+        <p class="respuesta">
+          El precio depende del equipo y de la falla. La empresa
+          debe informarte el costo del diagnóstico y las condiciones
+          antes de autorizar reparaciones adicionales.
+        </p>
+      </div>
 
-<div class="pregunta">
-<button aria-expanded="false">
-¿El servicio tiene garantía? <span>＋</span>
-</button>
-<p class="respuesta">
-Las condiciones de garantía deben ser informadas por la
-empresa y dependerán de la reparación y los repuestos.
-</p>
-</div>
+      <div class="pregunta">
+        <button aria-expanded="false">
+          ¿El servicio tiene garantía? <span>＋</span>
+        </button>
+        <p class="respuesta">
+          Las condiciones de garantía deben ser informadas por la
+          empresa y dependerán de la reparación y los repuestos.
+        </p>
+      </div>
 
-<div class="pregunta">
-<button aria-expanded="false">
-¿En qué ciudades trabajan? <span>＋</span>
-</button>
-<p class="respuesta">
-La cobertura se debe confirmar con la empresa.
-Puedes indicar tu ciudad en el formulario de solicitud.
-</p>
-</div>
+      <div class="pregunta">
+        <button aria-expanded="false">
+          ¿En qué ciudades trabajan? <span>＋</span>
+        </button>
+        <p class="respuesta">
+          La cobertura se debe confirmar con la empresa.
+          Puedes indicar tu ciudad en el formulario de solicitud.
+        </p>
+      </div>
 
-</div>
-</div>
+    </div>
+  </div>
 </section>
 
 </main>
 
+<!-- PIE DE PÁGINA -->
+
 <footer>
-<div class="contenedor">
+  <div class="contenedor">
 
-<div class="pie-grid">
-<div>
-<a class="logo" href="#inicio" style="color:white">
-Servitec<span>Alvarez</span>
-</a>
-<p>
-Servicio técnico para lavadoras, estufas y neveras,
-coordinado por una empresa con atención centralizada.
-</p>
-</div>
+    <div class="pie-grid">
+      <div>
+        <a class="logo" href="#inicio" style="color:white">
+          Servitec<span>Alvarez</span>
+        </a>
+        <p>
+          Servicio técnico para lavadoras, estufas y neveras,
+          coordinado por una empresa con atención centralizada.
+        </p>
+      </div>
 
-<div>
-<h3>Explora</h3>
-<div class="pie-enlaces">
-<a href="#servicios">Servicios</a>
-<a href="#empresa">Nosotros</a>
-<a href="#proceso">Cómo funciona</a>
-<a href="#preguntas">Preguntas frecuentes</a>
-</div>
-</div>
+      <div>
+        <h3>Explora</h3>
+        <div class="pie-enlaces">
+          <a href="#servicios">Servicios</a>
+          <a href="#empresa">Nosotros</a>
+          <a href="#historia">Nuestra historia</a>
+          <a href="#proceso">Cómo funciona</a>
+          <a href="#preguntas">Preguntas frecuentes</a>
+        </div>
+      </div>
 
-<div>
-<h3>Atención al cliente</h3>
-<p>
-Aquí puedes agregar el teléfono, WhatsApp,
-correo y dirección oficial de tu empresa.
-</p>
-</div>
-</div>
+      <div>
+        <h3>Atención al cliente</h3>
+        <p>
+          Aquí puedes agregar el teléfono, WhatsApp,
+          correo y dirección oficial de tu empresa.
+        </p>
+      </div>
+    </div>
 
-<div class="copyright">
-© 2026 Servitec Alvarez · Pagina web oficial.
-Los datos empresariales deben configurarse antes del lanzamiento.
-</div>
+    <div class="copyright">
+      © 2026 Servitec Alvarez · Pagina web oficial.
+      Los datos empresariales deben configurarse antes del lanzamiento.
+    </div>
 
-</div>
+  </div>
 </footer>
 
 <!-- FORMULARIO DE SOLICITUD -->
 
 <div class="fondo-modal" id="modal">
-<div class="modal">
+  <div class="modal">
 
-<div class="modal-cabecera">
-<div>
-<h2>Solicita tu servicio</h2>
-<p>Completa los datos para preparar tu solicitud.</p>
-</div>
-<button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
-</div>
+    <div class="modal-cabecera">
+      <div>
+        <h2>Solicita tu servicio</h2>
+        <p>Completa los datos para preparar tu solicitud.</p>
+      </div>
+      <button class="cerrar" id="cerrar" aria-label="Cerrar">×</button>
+    </div>
 
-<form id="formulario">
-<div class="formulario-grid">
+    <form id="formulario">
+      <div class="formulario-grid">
 
-<div class="campo">
-<label for="nombre">Nombre completo *</label>
-<input id="nombre" name="nombre" required>
-</div>
+        <div class="campo">
+          <label for="nombre">Nombre completo *</label>
+          <input id="nombre" name="nombre" required>
+        </div>
 
-<div class="campo">
-<label for="telefono">Celular *</label>
-<input id="telefono" name="telefono" type="tel" required>
-</div>
+        <div class="campo">
+          <label for="telefono">Celular *</label>
+          <input id="telefono" name="telefono" type="tel" required>
+        </div>
 
-<div class="campo">
-<label for="equipo">Electrodoméstico *</label>
-<select id="equipo" name="equipo" required>
-<option value="">Seleccionar</option>
-<option>Lavadora</option>
-<option>Estufa</option>
-<option>Nevera</option>
-</select>
-</div>
+        <div class="campo">
+          <label for="equipo">Electrodoméstico *</label>
+          <select id="equipo" name="equipo" required>
+            <option value="">Seleccionar</option>
+            <option>Lavadora</option>
+            <option>Estufa</option>
+            <option>Nevera</option>
+          </select>
+        </div>
 
-<div class="campo">
-<label for="tipo">Tipo de servicio *</label>
-<select id="tipo" name="tipo" required>
-<option value="">Seleccionar</option>
-<option>Diagnóstico</option>
-<option>Reparación</option>
-<option>Mantenimiento</option>
-</select>
-</div>
+        <div class="campo">
+          <label for="tipo">Tipo de servicio *</label>
+          <select id="tipo" name="tipo" required>
+            <option value="">Seleccionar</option>
+            <option>Diagnóstico</option>
+            <option>Reparación</option>
+            <option>Mantenimiento</option>
+          </select>
+        </div>
 
-<div class="campo">
-<label for="ciudad">Ciudad *</label>
-<input id="ciudad" name="ciudad" placeholder="Ej. Ibagué" required>
-</div>
+        <div class="campo">
+          <label for="ciudad">Ciudad *</label>
+          <input id="ciudad" name="ciudad" placeholder="Ej. Ibagué" required>
+        </div>
 
-<div class="campo">
-<label for="fecha">Fecha preferida</label>
-<input id="fecha" name="fecha" type="date">
-</div>
+        <div class="campo">
+          <label for="fecha">Fecha preferida</label>
+          <input id="fecha" name="fecha" type="date">
+        </div>
 
-<div class="campo completo">
-<label for="direccion">Dirección y barrio *</label>
-<input id="direccion" name="direccion" required>
-</div>
+        <div class="campo completo">
+          <label for="direccion">Dirección y barrio *</label>
+          <input id="direccion" name="direccion" required>
+        </div>
 
-<div class="campo completo">
-<label for="detalle">Describe la falla</label>
-<textarea id="detalle" name="detalle"
-placeholder="Cuéntanos qué sucede con tu equipo..."></textarea>
-</div>
+        <div class="campo completo">
+          <label for="detalle">Describe la falla</label>
+          <textarea id="detalle" name="detalle"
+            placeholder="Cuéntanos qué sucede con tu equipo..."></textarea>
+        </div>
 
-</div>
+      </div>
 
-<button class="boton enviar" type="submit">
-Revisar solicitud →
-</button>
+      <button class="boton enviar" type="submit">
+        Revisar solicitud →
+      </button>
 
-<div class="aviso" id="aviso" role="status"></div>
-</form>
-</div>
+      <div class="aviso" id="aviso" role="status"></div>
+    </form>
+
+  </div>
 </div>
 
 <script>
@@ -428,91 +1871,302 @@ const equipo = document.getElementById("equipo");
 const formulario = document.getElementById("formulario");
 const aviso = document.getElementById("aviso");
 
-// Abrir formulario
-document.querySelectorAll("[data-abrir]").forEach(boton => {
-boton.addEventListener("click", () => {
-modal.classList.add("abierto");
-document.body.style.overflow = "hidden";
-});
-});
+const asistentePantalla = document.getElementById("asistentePantalla");
+const asistentePaso = document.getElementById("asistentePaso");
+const asistenteProgreso = document.getElementById("asistenteProgreso");
 
-// Abrir formulario con el equipo seleccionado
-document.querySelectorAll("[data-servicio]").forEach(boton => {
-boton.addEventListener("click", () => {
-equipo.value = boton.dataset.servicio;
-modal.classList.add("abierto");
-document.body.style.overflow = "hidden";
-});
-});
+let equipoElegido = "";
+let fallaElegida = "";
+let pasoAsistente = 1;
 
-// Cerrar formulario
-function cerrarModal() {
-modal.classList.remove("abierto");
-document.body.style.overflow = "";
+function renderizarAsistente() {
+  asistentePaso.textContent = "PASO " + pasoAsistente + " DE 3";
+  asistenteProgreso.style.width = (pasoAsistente * 100 / 3) + "%";
+
+  if (pasoAsistente === 1) {
+    asistentePantalla.innerHTML = `
+      <h3 class="asistente-pregunta">¿Qué equipo necesita atención?</h3>
+
+      <div class="opciones-equipo">
+        <button type="button" class="opcion-equipo" data-equipo="Lavadora">
+          <span>🧺</span><strong>Lavadora</strong>
+        </button>
+
+        <button type="button" class="opcion-equipo" data-equipo="Nevera">
+          <span>❄️</span><strong>Nevera</strong>
+        </button>
+
+        <button type="button" class="opcion-equipo" data-equipo="Estufa">
+          <span>🔥</span><strong>Estufa</strong>
+        </button>
+      </div>
+
+      <div class="asistente-acciones">
+        <span class="asistente-ayuda">Te tomará menos de un minuto.</span>
+        <button type="button" class="boton" id="asistenteSiguiente"
+          ${equipoElegido ? "" : "disabled"}>
+          Continuar →
+        </button>
+      </div>
+    `;
+
+    document.querySelectorAll("[data-equipo]").forEach(btn => {
+      btn.classList.toggle(
+        "seleccionado",
+        btn.dataset.equipo === equipoElegido
+      );
+
+      btn.addEventListener("click", () => {
+        equipoElegido = btn.dataset.equipo;
+        renderizarAsistente();
+      });
+    });
+
+    document.getElementById("asistenteSiguiente").addEventListener("click", () => {
+      if (equipoElegido) {
+        pasoAsistente = 2;
+        renderizarAsistente();
+      }
+    });
+
+  } else if (pasoAsistente === 2) {
+    asistentePantalla.innerHTML = `
+      <h3 class="asistente-pregunta">
+        ¿Qué sucede con tu ${equipoElegido.toLowerCase()}?
+      </h3>
+
+      <div class="opciones-falla">
+        <button type="button" class="opcion-falla" data-falla="No enciende">
+          No enciende
+        </button>
+
+        <button type="button" class="opcion-falla" data-falla="Hace ruidos extraños">
+          Hace ruidos extraños
+        </button>
+
+        <button type="button" class="opcion-falla" data-falla="No enfría o no calienta">
+          No enfría / no calienta
+        </button>
+
+        <button type="button" class="opcion-falla" data-falla="Tiene fugas">
+          Tiene fugas
+        </button>
+
+        <button type="button" class="opcion-falla" data-falla="Necesita mantenimiento">
+          Necesita mantenimiento
+        </button>
+
+        <button type="button" class="opcion-falla" data-falla="Otra falla">
+          Otra falla
+        </button>
+      </div>
+
+      <div class="asistente-error" id="asistenteError">
+        Selecciona la opción que más se acerque a tu caso.
+      </div>
+
+      <div class="asistente-acciones">
+        <button type="button" class="boton boton-secundario" id="asistenteVolver">
+          ← Volver
+        </button>
+
+        <button type="button" class="boton" id="asistenteContinuar">
+          Continuar →
+        </button>
+      </div>
+    `;
+
+    document.querySelectorAll("[data-falla]").forEach(btn => {
+      btn.classList.toggle(
+        "seleccionado",
+        btn.dataset.falla === fallaElegida
+      );
+
+      btn.addEventListener("click", () => {
+        fallaElegida = btn.dataset.falla;
+        renderizarAsistente();
+      });
+    });
+
+    document.getElementById("asistenteVolver").addEventListener("click", () => {
+      pasoAsistente = 1;
+      renderizarAsistente();
+    });
+
+    document.getElementById("asistenteContinuar").addEventListener("click", () => {
+      if (!fallaElegida) {
+        document.getElementById("asistenteError").classList.add("visible");
+        return;
+      }
+
+      pasoAsistente = 3;
+      renderizarAsistente();
+    });
+
+  } else {
+    asistentePantalla.innerHTML = `
+      <h3 class="asistente-pregunta">
+        ¿En qué ciudad necesitas el servicio?
+      </h3>
+
+      <div class="asistente-campo">
+        <label for="asistenteCiudad">Ciudad o municipio</label>
+        <input id="asistenteCiudad" placeholder="Ej. Ibagué"
+          autocomplete="address-level2">
+      </div>
+
+      <div class="asistente-error" id="asistenteError">
+        Escribe la ciudad para continuar.
+      </div>
+
+      <div class="asistente-acciones">
+        <button type="button" class="boton boton-secundario" id="asistenteVolverFalla">
+          ← Volver
+        </button>
+
+        <button type="button" class="boton" id="asistentePreparar">
+          Preparar solicitud →
+        </button>
+      </div>
+    `;
+
+    document.getElementById("asistenteVolverFalla").addEventListener("click", () => {
+      pasoAsistente = 2;
+      renderizarAsistente();
+    });
+
+    document.getElementById("asistentePreparar").addEventListener("click", () => {
+      const ciudad = document.getElementById("asistenteCiudad").value.trim();
+
+      if (!ciudad) {
+        document.getElementById("asistenteError").classList.add("visible");
+        return;
+      }
+
+      equipo.value = equipoElegido;
+      document.getElementById("ciudad").value = ciudad;
+
+      document.getElementById("detalle").value =
+        "Falla reportada: " + fallaElegida + ". ";
+
+      document.getElementById("tipo").value =
+        fallaElegida === "Necesita mantenimiento"
+          ? "Mantenimiento"
+          : "Diagnóstico";
+
+      abrirModal();
+    });
+  }
 }
 
-document.getElementById("cerrar")
-.addEventListener("click", cerrarModal);
+renderizarAsistente();
+
+/* Botón flotante */
+
+const ayudaFlotante = document.createElement("button");
+
+ayudaFlotante.type = "button";
+ayudaFlotante.className = "flotante-ayuda";
+ayudaFlotante.innerHTML = "✦ <span>Solicitar ayuda</span>";
+ayudaFlotante.setAttribute("aria-label", "Ir al asistente de solicitud");
+
+ayudaFlotante.addEventListener("click", () => {
+  document.getElementById("asistente").scrollIntoView({
+    behavior: "smooth"
+  });
+});
+
+document.body.appendChild(ayudaFlotante);
+
+/* Abrir y cerrar formulario */
+
+function abrirModal() {
+  modal.classList.add("abierto");
+  document.body.style.overflow = "hidden";
+}
+
+function cerrarModal() {
+  modal.classList.remove("abierto");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll("[data-abrir]").forEach(boton => {
+  boton.addEventListener("click", abrirModal);
+});
+
+document.querySelectorAll("[data-servicio]").forEach(boton => {
+  boton.addEventListener("click", () => {
+    equipo.value = boton.dataset.servicio;
+    abrirModal();
+  });
+});
+
+document.getElementById("cerrar").addEventListener("click", cerrarModal);
 
 modal.addEventListener("click", evento => {
-if (evento.target === modal) {
-cerrarModal();
-}
+  if (evento.target === modal) {
+    cerrarModal();
+  }
 });
 
 document.addEventListener("keydown", evento => {
-if (evento.key === "Escape") {
-cerrarModal();
-}
+  if (evento.key === "Escape") {
+    cerrarModal();
+  }
 });
 
-// Mostrar confirmación de demostración
+/* Confirmación de demostración del formulario */
+
 formulario.addEventListener("submit", evento => {
-evento.preventDefault();
+  evento.preventDefault();
 
-const datos = new FormData(formulario);
-const nombre = datos.get("nombre");
-const electrodomestico = datos.get("equipo");
+  const datos = new FormData(formulario);
+  const nombre = datos.get("nombre");
+  const electrodomestico = datos.get("equipo");
 
-aviso.textContent =
-"¡Gracias, " + nombre + "! Tu solicitud de " +
-electrodomestico.toLowerCase() +
-" está preparada. Esta es una demostración: todavía debes " +
-"conectar el formulario al sistema real de la empresa.";
+  aviso.textContent =
+    "¡Gracias, " + nombre + "! Tu solicitud de " +
+    electrodomestico.toLowerCase() +
+    " está preparada. Esta es una demostración: todavía debes " +
+    "conectar el formulario al sistema real de la empresa.";
 
-aviso.classList.add("visible");
+  aviso.classList.add("visible");
 });
 
-// Preguntas frecuentes desplegables
+/* Preguntas frecuentes desplegables */
+
 document.querySelectorAll(".pregunta button").forEach(boton => {
-boton.addEventListener("click", () => {
-const pregunta = boton.parentElement;
-const abierta = pregunta.classList.toggle("activa");
+  boton.addEventListener("click", () => {
+    const pregunta = boton.parentElement;
+    const abierta = pregunta.classList.toggle("activa");
 
-boton.setAttribute("aria-expanded", abierta);
-boton.querySelector("span").textContent = abierta ? "−" : "＋";
-});
+    boton.setAttribute("aria-expanded", abierta);
+    boton.querySelector("span").textContent = abierta ? "−" : "＋";
+  });
 });
 
-// Menú para celulares
+/* Menú para celulares */
+
 const menu = document.getElementById("menu");
 const enlaces = document.getElementById("enlaces");
 
 menu.addEventListener("click", () => {
-enlaces.classList.toggle("abierto");
+  enlaces.classList.toggle("abierto");
 });
 
 enlaces.querySelectorAll("a").forEach(enlace => {
-enlace.addEventListener("click", () => {
-enlaces.classList.remove("abierto");
-});
+  enlace.addEventListener("click", () => {
+    enlaces.classList.remove("abierto");
+  });
 });
 
-// Evitar seleccionar fechas pasadas
+/* Evitar seleccionar fechas pasadas */
+
 const fecha = document.getElementById("fecha");
 const hoy = new Date();
+
 const fechaLocal = new Date(
-hoy.getTime() - hoy.getTimezoneOffset() * 60000
+  hoy.getTime() - hoy.getTimezoneOffset() * 60000
 ).toISOString().split("T")[0];
 
 fecha.min = fechaLocal;
