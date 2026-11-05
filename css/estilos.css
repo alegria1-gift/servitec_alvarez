@@ -621,3 +621,38 @@ height: 185px;
 .electrodomestico .icono {
 font-size: 48px;
 }
+
+
+.estado {
+  margin-top: 15px;
+  padding: 12px 15px;
+  border-radius: 8px;
+  display: none;
+  font-size: 14px;
+}
+
+.estado.info,
+.estado.exito,
+.estado.error {
+  display: block;
+}
+
+.estado.info {
+  background: #eaf3ff;
+  color: #1c4e80;
+}
+
+.estado.exito {
+  background: #e8f8ed;
+  color: #20783c;
+}
+
+.estado.error {
+  background: #fdecec;
+  color: #b42318;
+}
+
+.boton.enviar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
