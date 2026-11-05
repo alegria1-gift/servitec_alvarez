@@ -1,7 +1,6 @@
+
 import { Resend } from "resend";
 import { formidable } from "formidable";
-import fs from "node:fs/promises";
-import path from "node:path";
 
 export const config = {
   api: {
@@ -11,16 +10,7 @@ export const config = {
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const TIPOS_PERMITIDOS = {
-  ".pdf": "application/pdf",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".png": "image/png",
-  ".webp": "image/webp"
-};
-
-const TAMANO_MAXIMO = 3 * 1024 * 1024;
-
+// Escapar caracteres HTML para evitar inyecciones
 function escaparHTML(valor = "") {
   return String(valor).replace(/[&<>"']/g, (caracter) => ({
     "&": "&amp;",
@@ -31,11 +21,14 @@ function escaparHTML(valor = "") {
   })[caracter]);
 }
 
+// Obtener el valor de un campo
 function obtenerCampo(valor) {
   return Array.isArray(valor) ? valor[0] : valor;
 }
 
 export default async function handler(req, res) {
+
+  // Validar método HTTP
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -44,87 +37,41 @@ export default async function handler(req, res) {
   }
 
   try {
+
+    // Procesar formulario
     const form = formidable({
-      multiples: true,
-      maxFiles: 5,
-      maxFileSize: TAMANO_MAXIMO,
-      maxTotalFileSize: TAMANO_MAXIMO,
+      multiples: false,
       allowEmptyFiles: false
     });
 
-    const [fields, files] = await form.parse(req);
+    const [fields] = await form.parse(req);
 
+    // Obtener campos
     const nombre = obtenerCampo(fields.nombre);
-    const correo = obtenerCampo(fields.correo);
     const telefono = obtenerCampo(fields.telefono);
-    const mensaje = obtenerCampo(fields.mensaje);
+    const equipo = obtenerCampo(fields.equipo);
+    const tipo = obtenerCampo(fields.tipo);
+    const ciudad = obtenerCampo(fields.ciudad);
+    const fecha = obtenerCampo(fields.fecha);
+    const direccion = obtenerCampo(fields.direccion);
+    const detalle = obtenerCampo(fields.detalle);
 
-    if (!nombre || !correo || !mensaje) {
-      return res.status(400).json({
-        success: false,
-        message: "Completa los campos obligatorios."
-      });
-    }
-
+    // Validar campos obligatorios
     if (
-      typeof correo !== "string" ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)
+      !nombre?.trim() ||
+      !telefono?.trim() ||
+      !equipo?.trim() ||
+      !tipo?.trim() ||
+      !ciudad?.trim() ||
+      !direccion?.trim()
     ) {
       return res.status(400).json({
         success: false,
-        message: "El correo electrónico no es válido."
+        message: "Completa todos los campos obligatorios."
       });
     }
 
-    const listaArchivos = files.archivos
-      ? Array.isArray(files.archivos)
-        ? files.archivos
-        : [files.archivos]
-      : [];
-
-    if (listaArchivos.length > 5) {
-      return res.status(400).json({
-        success: false,
-        message: "Puedes adjuntar máximo 5 archivos."
-      });
-    }
-
-    const totalBytes = listaArchivos.reduce(
-      (total, archivo) => total + archivo.size,
-      0
-    );
-
-    if (totalBytes > TAMANO_MAXIMO) {
-      return res.status(400).json({
-        success: false,
-        message: "Los archivos superan el límite de 3 MB."
-      });
-    }
-
-    const adjuntos = [];
-
-    for (const archivo of listaArchivos) {
-      const extension = path.extname(
-        archivo.originalFilename || ""
-      ).toLowerCase();
-
-      const tipoEsperado = TIPOS_PERMITIDOS[extension];
-
-      if (!tipoEsperado || archivo.mimetype !== tipoEsperado) {
-        return res.status(400).json({
-          success: false,
-          message: "Solo se permiten PDF, JPG, PNG y WEBP."
-        });
-      }
-
-      const contenido = await fs.readFile(archivo.filepath);
-
-      adjuntos.push({
-        filename: path.basename(archivo.originalFilename),
-        content: contenido.toString("base64")
-      });
-    }
-
+    // Validar variables de entorno
     const destino = process.env.DESTINO_EMAIL;
     const remitente = process.env.REMITENTE_EMAIL;
 
@@ -136,42 +83,115 @@ export default async function handler(req, res) {
       throw new Error("Falta configurar las variables de correo.");
     }
 
+    // Enviar correo
     const { data, error } = await resend.emails.send({
+
       from: remitente,
       to: [destino],
-      replyTo: correo,
-      subject: `Nuevo formulario de ${nombre}`,
+
+      subject: `Nueva solicitud de servicio - ${nombre}`,
+
       html: `
-        <h2>Nuevo formulario recibido</h2>
-        <p><strong>Nombre:</strong> ${escaparHTML(nombre)}</p>
-        <p><strong>Correo:</strong> ${escaparHTML(correo)}</p>
-        <p><strong>Teléfono:</strong> ${escaparHTML(telefono || "No indicado")}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${escaparHTML(mensaje).replace(/\n/g, "<br>")}</p>
-        <p><strong>Archivos adjuntos:</strong> ${adjuntos.length}</p>
-      `,
-      attachments: adjuntos
+        <div style="
+          font-family: Arial, sans-serif;
+          max-width: 600px;
+          margin: auto;
+          padding: 25px;
+          color: #333;
+          border: 1px solid #eee;
+          border-radius: 10px;
+        ">
+
+          <h2 style="color: #1c3f60;">
+            Nueva solicitud de servicio técnico
+          </h2>
+
+          <p>Se ha recibido una nueva solicitud desde el formulario web.</p>
+
+          <hr>
+
+          <h3>Información del cliente</h3>
+
+          <p>
+            <strong>Nombre completo:</strong><br>
+            ${escaparHTML(nombre)}
+          </p>
+
+          <p>
+            <strong>Celular:</strong><br>
+            ${escaparHTML(telefono)}
+          </p>
+
+          <p>
+            <strong>Ciudad:</strong><br>
+            ${escaparHTML(ciudad)}
+          </p>
+
+          <p>
+            <strong>Dirección y barrio:</strong><br>
+            ${escaparHTML(direccion)}
+          </p>
+
+          <hr>
+
+          <h3>Información del servicio</h3>
+
+          <p>
+            <strong>Electrodoméstico:</strong><br>
+            ${escaparHTML(equipo)}
+          </p>
+
+          <p>
+            <strong>Tipo de servicio:</strong><br>
+            ${escaparHTML(tipo)}
+          </p>
+
+          <p>
+            <strong>Fecha preferida:</strong><br>
+            ${escaparHTML(fecha || "No indicada")}
+          </p>
+
+          <p>
+            <strong>Descripción de la falla:</strong><br>
+            ${escaparHTML(detalle || "Sin descripción")}
+          </p>
+
+          <hr>
+
+          <p style="font-size: 12px; color: #888;">
+            Este mensaje fue generado automáticamente
+            desde el formulario de solicitud de servicio técnico.
+          </p>
+
+        </div>
+      `
     });
 
+    // Validar respuesta de Resend
     if (error) {
       console.error("Error de Resend:", error);
+
       return res.status(500).json({
         success: false,
-        message: "No se pudo enviar el correo."
+        message: "No se pudo enviar la solicitud."
       });
     }
 
+    // Respuesta exitosa
     return res.status(200).json({
       success: true,
-      message: "Formulario enviado correctamente."
+      message: "Solicitud enviada correctamente."
     });
 
   } catch (error) {
+
     console.error("Error en el formulario:", error);
 
     return res.status(400).json({
       success: false,
-      message: "No se pudo procesar el formulario. Revisa los archivos e inténtalo nuevamente."
+      message: "No se pudo procesar la solicitud. Inténtalo nuevamente."
     });
+
   }
 }
+
