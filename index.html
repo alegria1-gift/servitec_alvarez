@@ -1123,6 +1123,21 @@ footer h3 {
     padding: 12px 15px;
   }
 }
+/*boton marcado pago*/
+.boton-pago {
+  background-color: #16a34a;
+  color: white;
+  padding: 14px 25px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.boton-pago:hover {
+  background: #15803d;
+  transform: scale(1.05);
+
+}
 </style>
 </head>
 
@@ -1173,7 +1188,16 @@ footer h3 {
         Solicita tu servicio en línea y deja que nuestro equipo
         coordine la atención que necesitas.
       </p>
-
+     <div class="precio"> flex == $0
+      "🏠 visita de diagnóstico a domicilio:"
+    <span class="js-precio">30.000</span> 
+    " COP"
+  </div>
+  <div class="acciones">
+    <a href="#" id="btn-pagar" class="boton-pago">
+    💳 pagar ahora
+    </a>
+  </div>
       <div class="acciones">
         <button class="boton" data-abrir>
           Adquiere nuestros servicios →
@@ -2171,6 +2195,10 @@ const fechaLocal = new Date(
 
 fecha.min = fechaLocal;
 </script>
-
+<script>
+  document.getElementById("btn-pagar").addEventListener("click", function() {
+    alert("conectando con mercado pago...");
+  });
+</script>
 </body>
 </html>
