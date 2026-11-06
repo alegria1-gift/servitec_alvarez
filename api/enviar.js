@@ -1,16 +1,7 @@
 
 import { Resend } from "resend";
-import { formidable } from "formidable";
 
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Escapar caracteres HTML para evitar inyecciones
+// Escapar caracteres HTML
 function escaparHTML(valor = "") {
   return String(valor).replace(/[&<>"']/g, (caracter) => ({
     "&": "&amp;",
@@ -21,14 +12,9 @@ function escaparHTML(valor = "") {
   })[caracter]);
 }
 
-// Obtener el valor de un campo
-function obtenerCampo(valor) {
-  return Array.isArray(valor) ? valor[0] : valor;
-}
-
 export default async function handler(req, res) {
 
-  // Validar método HTTP
+  // Validar método
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -38,25 +24,19 @@ export default async function handler(req, res) {
 
   try {
 
-    // Procesar formulario
-    const form = formidable({
-      multiples: false,
-      allowEmptyFiles: false
-    });
+    // Obtener información enviada desde scripts.js
+    const {
+      nombre,
+      telefono,
+      equipo,
+      tipo,
+      ciudad,
+      fecha,
+      direccion,
+      detalle
+    } = req.body || {};
 
-    const [fields] = await form.parse(req);
-
-    // Obtener campos
-    const nombre = obtenerCampo(fields.nombre);
-    const telefono = obtenerCampo(fields.telefono);
-    const equipo = obtenerCampo(fields.equipo);
-    const tipo = obtenerCampo(fields.tipo);
-    const ciudad = obtenerCampo(fields.ciudad);
-    const fecha = obtenerCampo(fields.fecha);
-    const direccion = obtenerCampo(fields.direccion);
-    const detalle = obtenerCampo(fields.detalle);
-
-    // Validar campos obligatorios
+    // Validar campos
     if (
       !nombre?.trim() ||
       !telefono?.trim() ||
@@ -71,127 +51,140 @@ export default async function handler(req, res) {
       });
     }
 
-    // Validar variables de entorno
+    // Obtener variables de entorno
+    const apiKey = process.env.RESEND_API_KEY;
     const destino = process.env.DESTINO_EMAIL;
     const remitente = process.env.REMITENTE_EMAIL;
 
-    if (
-      !process.env.RESEND_API_KEY ||
-      !destino ||
-      !remitente
-    ) {
-      throw new Error("Falta configurar las variables de correo.");
+    if (!apiKey || !destino || !remitente) {
+      console.error("Faltan variables de entorno.");
+
+      return res.status(500).json({
+        success: false,
+        message: "El servicio de correo no está configurado."
+      });
     }
+
+    // Inicializar Resend
+    const resend = new Resend(apiKey);
+
+    // Crear contenido del correo
+    const html = `
+      <div style="
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: auto;
+        padding: 25px;
+        color: #18363b;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+      ">
+
+        <h2 style="color: #102d35;">
+          Nueva solicitud - Servitec Alvarez
+        </h2>
+
+        <p>Se ha recibido una nueva solicitud desde la página web.</p>
+
+        <hr>
+
+        <h3>Información del cliente</h3>
+
+        <p><strong>Nombre:</strong><br>
+        ${escaparHTML(nombre)}</p>
+
+        <p><strong>Teléfono:</strong><br>
+        ${escaparHTML(telefono)}</p>
+
+        <p><strong>Ciudad:</strong><br>
+        ${escaparHTML(ciudad)}</p>
+
+        <p><strong>Dirección:</strong><br>
+        ${escaparHTML(direccion)}</p>
+
+        <hr>
+
+        <h3>Información del servicio</h3>
+
+        <p><strong>Electrodoméstico:</strong><br>
+        ${escaparHTML(equipo)}</p>
+
+        <p><strong>Tipo de servicio:</strong><br>
+        ${escaparHTML(tipo)}</p>
+
+        <p><strong>Fecha preferida:</strong><br>
+        ${escaparHTML(fecha || "No indicada")}</p>
+
+        <p><strong>Descripción de la falla:</strong><br>
+        ${escaparHTML(detalle || "Sin descripción")}</p>
+
+        <hr>
+
+        <p style="font-size: 12px; color: #777;">
+          Mensaje automático generado por Servitec Alvarez.
+        </p>
+
+      </div>
+    `;
 
     // Enviar correo
     const { data, error } = await resend.emails.send({
 
       from: remitente,
+
       to: [destino],
 
       subject: `Nueva solicitud de servicio - ${nombre}`,
 
-      html: `
-        <div style="
-          font-family: Arial, sans-serif;
-          max-width: 600px;
-          margin: auto;
-          padding: 25px;
-          color: #333;
-          border: 1px solid #eee;
-          border-radius: 10px;
-        ">
+      html: html,
 
-          <h2 style="color: #1c3f60;">
-            Nueva solicitud de servicio técnico
-          </h2>
+      text: `
+Nueva solicitud de Servitec Alvarez
 
-          <p>Se ha recibido una nueva solicitud desde el formulario web.</p>
+Cliente: ${nombre}
+Teléfono: ${telefono}
+Ciudad: ${ciudad}
+Dirección: ${direccion}
 
-          <hr>
+Equipo: ${equipo}
+Servicio: ${tipo}
+Fecha: ${fecha || "No indicada"}
 
-          <h3>Información del cliente</h3>
-
-          <p>
-            <strong>Nombre completo:</strong><br>
-            ${escaparHTML(nombre)}
-          </p>
-
-          <p>
-            <strong>Celular:</strong><br>
-            ${escaparHTML(telefono)}
-          </p>
-
-          <p>
-            <strong>Ciudad:</strong><br>
-            ${escaparHTML(ciudad)}
-          </p>
-
-          <p>
-            <strong>Dirección y barrio:</strong><br>
-            ${escaparHTML(direccion)}
-          </p>
-
-          <hr>
-
-          <h3>Información del servicio</h3>
-
-          <p>
-            <strong>Electrodoméstico:</strong><br>
-            ${escaparHTML(equipo)}
-          </p>
-
-          <p>
-            <strong>Tipo de servicio:</strong><br>
-            ${escaparHTML(tipo)}
-          </p>
-
-          <p>
-            <strong>Fecha preferida:</strong><br>
-            ${escaparHTML(fecha || "No indicada")}
-          </p>
-
-          <p>
-            <strong>Descripción de la falla:</strong><br>
-            ${escaparHTML(detalle || "Sin descripción")}
-          </p>
-
-          <hr>
-
-          <p style="font-size: 12px; color: #888;">
-            Este mensaje fue generado automáticamente
-            desde el formulario de solicitud de servicio técnico.
-          </p>
-
-        </div>
+Descripción:
+${detalle || "Sin descripción"}
       `
+
     });
 
-    // Validar respuesta de Resend
+    // Comprobar resultado
     if (error) {
+
       console.error("Error de Resend:", error);
 
-      return res.status(500).json({
+      return res.status(502).json({
         success: false,
-        message: "No se pudo enviar la solicitud."
+        message: "Resend no pudo enviar el correo. Revisa la configuración."
       });
+
     }
 
-    // Respuesta exitosa
+    console.log("Correo enviado correctamente:", data?.id);
+
     return res.status(200).json({
       success: true,
-      message: "Solicitud enviada correctamente."
+      message: "Solicitud enviada correctamente.",
+      id: data?.id
     });
 
   } catch (error) {
 
-    console.error("Error en el formulario:", error);
+    console.error("Error en API enviar:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
-      message: "No se pudo procesar la solicitud. Inténtalo nuevamente."
+      message: "Error interno al procesar la solicitud."
     });
 
   }
-}
 
+}
