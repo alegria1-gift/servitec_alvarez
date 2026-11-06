@@ -1915,7 +1915,7 @@ footer h3 {
 const modal = document.getElementById("modal");
 const equipo = document.getElementById("equipo");
 const formulario = document.getElementById("formulario");
-const aviso = document.getElementById("aviso");
+
 
 const asistentePantalla = document.getElementById("asistentePantalla");
 const asistentePaso = document.getElementById("asistentePaso");
@@ -2161,23 +2161,7 @@ document.addEventListener("keydown", evento => {
   }
 });
 
-/* Confirmación de demostración del formulario */
 
-formulario.addEventListener("submit", evento => {
-  evento.preventDefault();
-
-  const datos = new FormData(formulario);
-  const nombre = datos.get("nombre");
-  const electrodomestico = datos.get("equipo");
-
-  aviso.textContent =
-    "¡Gracias, " + nombre + "! Tu solicitud de " +
-    electrodomestico.toLowerCase() +
-    " está preparada. Esta es una demostración: todavía debes " +
-    "conectar el formulario al sistema real de la empresa.";
-
-  aviso.classList.add("visible");
-});
 
 /* Preguntas frecuentes desplegables */
 
