@@ -1,77 +1,80 @@
 
-const formulario = document.getElementById("formulario");
-const botonEnviar = formulario.querySelector(".boton.enviar");
+document.addEventListener("DOMContentLoaded", () => {
 
-// Elemento para mostrar mensajes
-const estado = document.getElementById("estado");
+  const formulario = document.getElementById("formulario");
 
-// Mostrar mensajes al visitante
-function mostrarEstado(mensaje, tipo) {
-  estado.textContent = mensaje;
-  estado.className = "estado " + tipo;
-}
-
-// Enviar formulario
-formulario.addEventListener("submit", async function (event) {
-
-  event.preventDefault();
-
-  // Validar campos obligatorios
-  if (!formulario.reportValidity()) {
+  if (!formulario) {
+    console.error("No se encontró el formulario.");
     return;
   }
 
-  // Obtener datos del formulario
-  const datos = new FormData(formulario);
+  const botonEnviar = formulario.querySelector(".boton.enviar");
+  const estado = document.getElementById("estado");
 
-  // Deshabilitar botón
-  botonEnviar.disabled = true;
-  botonEnviar.textContent = "Enviando solicitud...";
+  function mostrarEstado(mensaje, tipo) {
+    estado.textContent = mensaje;
+    estado.className = "estado " + tipo;
+  }
 
-  mostrarEstado(
-    "Estamos enviando tu solicitud. Espera un momento.",
-    "info"
-  );
+  formulario.addEventListener("submit", async (event) => {
 
-  try {
+    event.preventDefault();
 
-    // Enviar información al servidor
-    const respuesta = await fetch("/api/enviar", {
-      method: "POST",
-      body: datos
-    });
+    if (!formulario.reportValidity()) return;
 
-    const resultado = await respuesta.json();
+    const datosFormulario = new FormData(formulario);
 
-    // Comprobar respuesta
-    if (!respuesta.ok || !resultado.success) {
-      throw new Error(
-        resultado.message || "No se pudo enviar la solicitud."
+    const datos = Object.fromEntries(datosFormulario.entries());
+
+    botonEnviar.disabled = true;
+    botonEnviar.textContent = "Enviando solicitud...";
+
+    mostrarEstado(
+      "Estamos enviando tu solicitud. Por favor espera.",
+      "info"
+    );
+
+    try {
+
+      const respuesta = await fetch("/api/enviar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datos)
+      });
+
+      const resultado = await respuesta.json();
+
+      if (!respuesta.ok || !resultado.success) {
+        throw new Error(
+          resultado.message || "No se pudo enviar la solicitud."
+        );
+      }
+
+      mostrarEstado(
+        "¡Excelente! Tu solicitud fue enviada correctamente. Pronto nos pondremos en contacto contigo.",
+        "exito"
       );
+
+      formulario.reset();
+
+    } catch (error) {
+
+      console.error("Error al enviar:", error);
+
+      mostrarEstado(
+        error.message || "Ocurrió un error. Inténtalo nuevamente.",
+        "error"
+      );
+
+    } finally {
+
+      botonEnviar.disabled = false;
+      botonEnviar.textContent = "Revisar solicitud →";
+
     }
 
-    // Mostrar confirmación
-    mostrarEstado(
-      "¡Excelente! Tu solicitud fue enviada correctamente. Pronto nos pondremos en contacto contigo.",
-      "exito"
-    );
-
-    // Limpiar formulario
-    formulario.reset();
-
-  } catch (error) {
-
-    mostrarEstado(
-      error.message || "Ocurrió un error al enviar la solicitud. Inténtalo nuevamente.",
-      "error"
-    );
-
-  } finally {
-
-    // Reactivar botón
-    botonEnviar.disabled = false;
-    botonEnviar.textContent = "Revisar solicitud →";
-
-  }
+  });
 
 });
