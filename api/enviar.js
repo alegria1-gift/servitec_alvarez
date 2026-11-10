@@ -52,19 +52,32 @@ export default async function handler(req, res) {
     }
 
     // Obtener variables de entorno
-    const apiKey = process.env.RESEND_API_KEY;
-    const destino = process.env.DESTINO_EMAIL;
-    const remitente = process.env.REMITENTE_EMAIL;
+  // Obtener variables de entorno
+    const apiKey = process.env.RESEND_API_KEY?.trim();
+    const destino = process.env.DESTINO_EMAIL?.trim();
+    const remitente = process.env.REMITENTE_EMAIL?.trim();
 
-    if (!apiKey || !destino || !remitente) {
-      console.error("Faltan variables de entorno.");
+    // Comprobar qué variables están disponibles
+    const faltantes = [];
+
+    if (!apiKey) faltantes.push("RESEND_API_KEY");
+    if (!destino) faltantes.push("DESTINO_EMAIL");
+    if (!remitente) faltantes.push("REMITENTE_EMAIL");
+
+    console.log("Diagnóstico de variables:", {
+      RESEND_API_KEY: Boolean(apiKey),
+      DESTINO_EMAIL: Boolean(destino),
+      REMITENTE_EMAIL: Boolean(remitente)
+    });
+
+    if (faltantes.length > 0) {
+      console.error("Variables faltantes:", faltantes);
 
       return res.status(500).json({
         success: false,
-        message: "El servicio de correo no está configurado."
+        message: "Faltan variables de entorno: " + faltantes.join(", ")
       });
     }
-
     // Inicializar Resend
     const resend = new Resend(apiKey);
 
